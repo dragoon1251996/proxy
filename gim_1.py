@@ -17,24 +17,25 @@ async def show(proxies):
             protocol=[x.strip() for x in protocol.split(",")]
         value={"host":str(proxy.host), "port":str(proxy.port),"protocol":protocol,"country":"US"}
         r.set(str(key), value)
-        print(value)
+        print({key:value})
 
 
 
 
 
 while True:
-    try:
-        proxies = asyncio.Queue()
-        broker = Broker(proxies)
-        tasks = asyncio.gather(
-            broker.find(types=["HTTP","HTTPS",'SOCKS4', 'SOCKS5'], countries= "US",limit=100),
-            show(proxies))
-        loop = asyncio.get_event_loop()
-        loop.run_until_complete(tasks)
-    except:
-        pass
-    else:
-        print("x")
-
-
+    # try:
+    proxies = asyncio.Queue()
+    broker = Broker(proxies)
+    tasks = asyncio.gather(
+        broker.find(types=["HTTP","HTTPS",'SOCKS4', 'SOCKS5'], countries= "US",limit=500),
+        show(proxies))
+    loop = asyncio.get_event_loop()
+    loop.run_until_complete(tasks)
+    # except:
+    #     loop.close()
+    #     loop = asyncio.new_event_loop()
+    #     broker=""
+    #     print("x")
+    #
+    #     pass
